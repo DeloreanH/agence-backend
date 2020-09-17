@@ -60,13 +60,12 @@ class caoFatura extends Model
              ->join('cao_os', 'cao_fatura.co_os', '=', 'cao_os.co_os')
              ->join('cao_usuario', 'cao_os.co_usuario', '=', 'cao_usuario.co_usuario')
              ->leftJoin('cao_salario', 'cao_usuario.co_usuario', '=', 'cao_salario.co_usuario')
-             ->having('date_period', '>=', $start)
-             ->having('date_period', '<=', $end)
+             ->whereBetween(DB::raw('date_format(cao_fatura.data_emissao,"%Y-%m")'), [$start, $end])
              ->whereIn('cao_usuario.co_usuario', $users)
              ->groupBy('user_id','user_name', 'date_period', 'fixed_cost')
              ->get()
              ->reduce(function ($carry, $item) {
-                 $carry[$item['user_id']]['name']   = $item['user_name'];
+                 $carry[$item['user_id']]['name'] = $item['user_name'];
                  $carry[$item['user_id']]['data'][] = [
                      "date_period" => $item->date_period,
                      "fixed_cost"  => $item->fixed_cost,
