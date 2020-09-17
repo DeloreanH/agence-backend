@@ -20,7 +20,7 @@ class userController extends Controller
     public function consultans()
     {
         $users = $this->caoUser->consultans();
-        return response()->json(['users' => $users],200);
+        return response()->json( $users, 200);
     }
 }
 
