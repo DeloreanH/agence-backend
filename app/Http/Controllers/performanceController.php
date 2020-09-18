@@ -28,10 +28,10 @@ class performanceController extends Controller
         $peformances  = $this->caoFatura->usersPeformance($request->users,$request->start_date,$request->end_date);
         $avgFixedCost = $this->caoSalario->averageFixedCost($request->users);
         return response()->json([
+            'start_date'     => $request->start_date,
+            'end_date'       => $request->end_date,
             'avg_fixed_cost' => $avgFixedCost->avg_fixed_cost,
             'users'          => array_values($peformances)
         ],200);
     }
 }
-
-
