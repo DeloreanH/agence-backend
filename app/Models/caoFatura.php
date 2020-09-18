@@ -63,6 +63,8 @@ class caoFatura extends Model
              ->whereBetween(DB::raw('date_format(cao_fatura.data_emissao,"%Y-%m")'), [$start, $end])
              ->whereIn('cao_usuario.co_usuario', $users)
              ->groupBy('user_id','user_name', 'date_period', 'fixed_cost')
+             ->orderBy('date_period', 'ASC')
+             ->orderBy('user_name', 'ASC')
              ->get()
              ->reduce(function ($carry, $item) {
                  $carry[$item['user_id']]['name'] = $item['user_name'];
