@@ -29,7 +29,7 @@ class performanceController extends Controller
         $avgFixedCost = $this->caoSalario->averageFixedCost($request->users);
         return response()->json([
             'avg_fixed_cost' => $avgFixedCost->avg_fixed_cost,
-            'users'          => $peformances
+            'users'          => array_values($peformances)
         ],200);
     }
 }
