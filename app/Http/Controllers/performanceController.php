@@ -26,12 +26,16 @@ class performanceController extends Controller
     public function users(reportsRequest $request)
     {
         $peformances  = $this->caoFatura->usersPeformance($request->users,$request->start_date,$request->end_date);
-        $avgFixedCost = $this->caoSalario->averageFixedCost($request->users);
-        return response()->json([
-            'start_date'     => $request->start_date,
-            'end_date'       => $request->end_date,
-            'avg_fixed_cost' => $avgFixedCost->avg_fixed_cost,
-            'users'          => array_values($peformances)
-        ],200);
+        if(Empty($peformances)){
+            return response()->json([],200);
+        } else {
+            $avgFixedCost = $this->caoSalario->averageFixedCost($request->users);
+            return response()->json([
+                'start_date'     => $request->start_date,
+                'end_date'       => $request->end_date,
+                'avg_fixed_cost' => $avgFixedCost->avg_fixed_cost,
+                'users'          => array_values($peformances)
+            ],200);
+        }
     }
 }
