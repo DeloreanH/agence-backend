@@ -47,10 +47,10 @@ class performanceController extends Controller
      */
     private function calculateTotals(array $peformances) {
         foreach ($peformances as $user => $peformance) {
-            $peformances[$user]['total_fixed_cost'] = $this->sumTotal($peformance,'fixed_cost');
-            $peformances[$user]['total_net_income'] = $this->sumTotal($peformance,'net_income');
-            $peformances[$user]['total_commission'] = $this->sumTotal($peformance,'commission');
-            $peformances[$user]['total_profit']     = $this->sumTotal($peformance,'profit');
+            $peformances[$user]['total_fixed_cost'] = round($this->sumTotal($peformance,'fixed_cost'),2);
+            $peformances[$user]['total_net_income'] = round($this->sumTotal($peformance,'net_income'),2);
+            $peformances[$user]['total_commission'] = round($this->sumTotal($peformance,'commission'),2);
+            $peformances[$user]['total_profit']     = round($this->sumTotal($peformance,'profit'),2);
         }
         return $peformances;
     }
