@@ -29,13 +29,41 @@ class performanceController extends Controller
         if(Empty($peformances)){
             return response()->json([],200);
         } else {
-            $avgFixedCost = $this->caoSalario->averageFixedCost($request->users);
+            $peformancesWithTotals = $this->calculateTotals($peformances);
+            $avgFixedCost          = $this->caoSalario->averageFixedCost($request->users);
             return response()->json([
                 'start_date'     => $request->start_date,
                 'end_date'       => $request->end_date,
                 'avg_fixed_cost' => $avgFixedCost->avg_fixed_cost,
-                'users'          => array_values($peformances)
+                'users'          => array_values($peformancesWithTotals)
             ],200);
         }
     }
+
+    /**
+     * calculate total performances per user
+     * @param array $peformances
+     * @return array
+     */
+    private function calculateTotals(array $peformances) {
+        foreach ($peformances as $user => $peformance) {
+            $peformances[$user]['total_fixed_cost'] = $this->sumTotal($peformance,'fixed_cost');
+            $peformances[$user]['total_net_income'] = $this->sumTotal($peformance,'net_income');
+            $peformances[$user]['total_commission'] = $this->sumTotal($peformance,'commission');
+            $peformances[$user]['total_profit']     = $this->sumTotal($peformance,'profit');
+        }
+        return $peformances;
+    }
+
+   /**
+     * sum the totals of the specified field
+     * @param array $userPeformance
+     * @return array
+     */
+    private function sumTotal(array $userPeformance, string $fieldToSum){
+       return array_reduce($userPeformance['data'], function($accu, $current) use ($fieldToSum) {
+            return $accu = $accu +  $current[$fieldToSum];
+        },$initial=0);
+    }
+
 }

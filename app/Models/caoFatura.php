@@ -67,7 +67,7 @@ class caoFatura extends Model
              ->orderBy('user_name', 'ASC')
              ->get()
              ->reduce(function ($carry, $item) {
-                 $carry[$item['user_id']]['name'] = $item['user_name'];
+                 $carry[$item['user_id']]['name'] = $item->user_name;
                  $carry[$item['user_id']]['data'][] = [
                      "date_period" => $item->date_period,
                      "fixed_cost"  => $item->fixed_cost,
