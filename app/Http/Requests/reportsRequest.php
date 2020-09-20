@@ -27,7 +27,7 @@ class reportsRequest extends FormRequest
             'users'      => 'required|array',
             "users.*"    => "required|string|distinct",
             'start_date' => 'required|date_format:Y-m',
-            'end_date'   =>  'required|date_format:Y-m|after:start_date',
+            'end_date'   =>  'required|date_format:Y-m|after_or_equal:start_date',
         ];
     }
 }
